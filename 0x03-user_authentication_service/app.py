@@ -20,8 +20,8 @@ AUTH = Auth()
 @app.route("/", methods=["GET"], strict_slashes=False)
 def index() -> str:
     """
-    Return json response
-    {"message:" "Bienvenue}
+    Return json respomse
+    {"message": "Bienvenue"}
     """
     return jsonify({"message": "Bienvenue"})
 
@@ -44,8 +44,8 @@ def users() -> str:
 @app.route("/sessions", methods=["POST"], strict_slashes=False)
 def login() -> str:
     """
-    Log in a user if the credentials are correct,
-    then create a new session for that user
+    Log in a user if the credentials provided are correct, and create a new
+    session for them.
     """
     email = request.form.get("email")
     password = request.form.get("password")
@@ -62,7 +62,7 @@ def login() -> str:
 @app.route("/sessions", methods=["DELETE"], strict_slashes=False)
 def logout():
     """
-    Log out a logged in user and kill their session
+    Log out a logged in user and destroy their session
     """
     session_id = request.cookies.get("session_id", None)
     user = AUTH.get_user_from_session_id(session_id)
@@ -71,10 +71,11 @@ def logout():
     AUTH.destroy_session(user.id)
     return redirect("/")
 
+
 @app.route("/profile", methods=["GET"], strict_slashes=False)
 def profile() -> str:
     """
-    Return a user's email based on session_id in received cookies
+    Return a user's email based on session_id in the received cookies
     """
     session_id = request.cookies.get("session_id")
     user = AUTH.get_user_from_session_id(session_id)
@@ -86,7 +87,7 @@ def profile() -> str:
 @app.route("/reset_password", methods=["POST"], strict_slashes=False)
 def get_reset_password_token() -> str:
     """
-    Generate a token to reset password fro user
+    Generate a token for resetting a user's password
     """
     email = request.form.get("email")
     try:
@@ -94,13 +95,14 @@ def get_reset_password_token() -> str:
     except ValueError:
         abort(403)
 
-    return jsonify({"email": f"{email}"}, "reset_token": f"{reset_token}")
+    return jsonify({"email": f"{email}", "reset_token": f"{reset_token}"})
 
 
 @app.route("/reset_password", methods=["PUT"], strict_slashes=False)
 def update_password() -> str:
     """
-    update the password for user"""
+    Update a user's password
+    """
     email = request.form.get("email")
     reset_token = request.form.get("reset_token")
     new_password = request.form.get("new_password")
@@ -110,7 +112,7 @@ def update_password() -> str:
     except ValueError:
         abort(403)
 
-    return jsonify({"email": f"{email}", "message": "Password Updated"})
+    return jsonify({"email": f"{email}", "message": "Password updated"})
 
 
 if __name__ == "__main__":
