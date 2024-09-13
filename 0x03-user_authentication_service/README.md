@@ -1,1 +1,3 @@
-er_authentication_service
+# User Authentication Service
+
+Build a user authentication service based on sessions
